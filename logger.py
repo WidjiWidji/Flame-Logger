@@ -11,7 +11,7 @@ lines = log_file.readlines()[3:-1]
 
 for line in lines:
     print(line.split()[8])
-    cpu_usage.append(line.split()[8])
+    cpu_usage.append(float(line.split()[8]))
 
 log_file.close()
 
