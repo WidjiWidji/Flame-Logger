@@ -40,7 +40,7 @@ echo "done"
 # Get process resource usage
 pidstat 1 4500 -p $PROCESS_ID > logs/kube_aggregator.cpu & 
 pidstat 1 4500 -r -p $PROCESS_ID > logs/kube_aggregator.memory &
-
+mpstat 1 4500 > logs/kube_mpstat.cpu 
 # Run python script to graph logs
 #python3 plot_log.py
 
