@@ -1,6 +1,6 @@
 # Get resource usage of aggregator flame-agent
 
-JOB_ID="62e2e4ec15c7a6aad82e5e61"
+JOB_ID="6310f85bab6384f88c800d00"
 
 # Look through each flame task and check if it is aggregator
 # once aggregator has been found extract aggregator's task id
@@ -25,19 +25,15 @@ flamectl start job $JOB_ID --insecure
 # FIX: NEED TO WAIT FOR flame-agent pods to be created
 sleep 15
 
-echo "Getting ContainerID"
-
-# Get ContainerID and ProcessID for aggregator flamelet agent
-CONTAINER_ID=$(kubectl get pods -l job-name=flame-agent-${aggregator_task_id} -n flame -o json | jq -r '.items[].status.containerStatuses[] |.containerID' | awk '{print substr($0, 14)}')
-
-echo "done"
 echo "Getting ProcessID"
 
-PROCESS_ID=$(crictl inspect --output go-template --template '{{.info.pid}}' $CONTAINER_ID)
+PROCESS_ID=$(ps -aux | grep aggregator | head -n 1 | awk '{print $2}')
 
 echo "done"
 
 # Get process resource usage
+cpustat 0.333 -a -p $PROCESS_ID > logs/cpustat_a.txt
+cpustat 0.333 -p $PROCESS_ID > logs/cpustat.txt
 pidstat 1 4500 -p $PROCESS_ID > logs/kube_aggregator.cpu & 
 pidstat 1 4500 -r -p $PROCESS_ID > logs/kube_aggregator.memory &
 mpstat 1 4500 > logs/kube_mpstat.cpu 
