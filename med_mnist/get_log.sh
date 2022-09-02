@@ -1,6 +1,6 @@
 # Get resource usage of aggregator flame-agent
 
-JOB_ID="6310f85bab6384f88c800d00"
+JOB_ID="63123a15b86498cc2e657696"
 
 # Look through each flame task and check if it is aggregator
 # once aggregator has been found extract aggregator's task id
